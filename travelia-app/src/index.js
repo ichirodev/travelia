@@ -1,11 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import { Router, hashHistory as history } from 'react-router';
+const express = require('express');
+const morgan = require('morgan');
+const app = express();
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+// Settings
+app.set('port', process.env.PORT || 5000);
+
+// Middleware
+app.use(morgan('dev'));
+app.use(express.json());
+
+// Routes
+app.use(require('./routes'));
+
+// Static files
+
+// Start the server
+app.listen(app.get('port'), () => {
+  console.log("Server running");
+});
