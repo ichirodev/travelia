@@ -1,5 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
+
+const { moongose } = require('./database');
 const app = express();
 
 // Settings
