@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
+const URI = 'mongodb://localhost/travelia';
 
-const databaseURI = 'mongodb://localhost/travelia-app';
-
-mongoose.connect(databaseURI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
-    .then(db => console.log('MongoDB database is online!'))
-    .catch(err => console.log(err));
+mongoose.connect(URI)
+  .then(db => console.log('🐶 Database is connected'))
+  .catch(error => console.error(error));
 
 module.exports = mongoose;

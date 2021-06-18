@@ -1,3 +1,7 @@
+// React
+import React from 'react';
+import ReactDOM from 'react-dom';
+
 // Material-UI
 import {
   Button,
@@ -89,7 +93,7 @@ const Home = () => {
                       {" Malibu, California, Estados Unidos de America"}
                     </Typography>
                     <Typography className={cardStyle.pos} color="textSecondary">
-                      {"Desde $10,699"}
+                      {"Desde $15,699"}
                     </Typography>
                     <Typography variant="body2" component="p"></Typography>
                   </CardContent>

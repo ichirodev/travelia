@@ -1,22 +1,26 @@
 const express = require('express');
 const morgan = require('morgan');
+const path = require('path');
 
-const { moongose } = require('./database');
 const app = express();
 
-// Settings
-app.set('port', process.env.PORT || 5000);
+// Db connection
+const { mongoose } = require('./database');
 
-// Middleware
+// Settings 
+app.set('port', process.env.PORT || 3001);
+
+// Middlewares
 app.use(morgan('dev'));
 app.use(express.json());
 
 // Routes
-app.use(require('./routes'));
+app.use('/api/tasks', require('./routes/task.routes'));
 
-// Static files
+// Static Files
+app.use(express.static(path.join(__dirname, 'public')));;
 
-// Start the server
+// Starting the server
 app.listen(app.get('port'), () => {
-  console.log("Server running");
+  console.log(`Server on port ${app.get('port')}`);
 });
