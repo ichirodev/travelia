@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const URI = 'mongodb://localhost/travelia';
 
 mongoose.connect(URI)
-  .then(db => console.log('🐶 Database is connected'))
-  .catch(error => console.error(error));
+  .then(db => console.log('✔️ Database is connected'))
+  .catch(error => console.error('❌ ' + error));
 
 module.exports = mongoose;
