@@ -1,5 +1,5 @@
 // React
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
 // ?
@@ -17,54 +17,77 @@ import Button from "@material-ui/core/Button";
 // Style
 import { divCenterStyle } from "./CssStyles";
 
-const gridStyle = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-  },
-}));
-
-const cardStyle = makeStyles({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 145,
-  },
-});
-
 /* Catalog */
-const Catalog = () => {
-  const gridStyleClass = gridStyle();
-  const cardStyleClass = cardStyle();
-  const divCenterStyleClass = divCenterStyle();
+class Catalog extends Component {
+  constructor() {
+    super();
+    this.state = {
+      title: '',
+      description: '',
+      place: '',
+      sits: 0,
+      cost: 0,
+      date: null,
+      image: '',
+      _id: '',
+      places: []
+    };
 
+    this.handleChange = this.handleChange.bind(this);
+    //this.addPlace = this.addPlace.bind(this);
+  }
+
+  componentDidMount() {
+    this.fetchPlaces();
+  }
+
+  fetchPlaces() {
+    fetch('/api/places')
+      .then(res => res.json())
+      .then(data => {
+        this.setState({places: data});
+        console.log(this.state.tasks)
+      });
+  }
+
+  handleChange(e) {
+    const {name, value} = e.target;
+    this.setState({
+      [name]: value
+    });
+  }
+
+  render() {
   return (
-    <div className={divCenterStyleClass.div}>
-      <div className={gridStyleClass.root}>
+    <div>
         <Grid container spacing={2}>
-          <Grid item xs={6} sm={2}>
-            <Card className={cardStyleClass.root}>
+          {
+            this.state.places.map(_place => {
+              return (
+                <Grid item xs={6} sm={3}>
+            <Card>
               <CardActionArea>
                 <CardMedia
-                  className={cardStyleClass.media}
-                  image="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081"
-                  title="Image"
+                  style={{height: 140}}
+                  image={_place.image}
+                  title={_place.title}
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="h2">
-                    {"Destino"}
+                    {_place.title}
                   </Typography>
                   <Typography
                     variant="body2"
                     color="textSecondary"
                     component="p"
                   >
-                    Información sobre el destino
+                    {_place.place}
+                    <br></br>
+                    {_place.description}
+                    <br></br>
+                    Asientos disponibles: {_place.sits}
+                    <br></br>
+                    Fecha de salida: {_place.date}
                   </Typography>
                 </CardContent>
               </CardActionArea>
@@ -73,366 +96,17 @@ const Catalog = () => {
                   Ver más
                 </Button>
                 <Button size="small" color="primary">
-                  Reservar
+                  Reservar por {_place.cost}
                 </Button>
               </CardActions>
             </Card>
           </Grid>
-
-          <Grid item xs={6} sm={2}>
-            <Card className={cardStyleClass.root}>
-              <CardActionArea>
-                <CardMedia
-                  className={cardStyleClass.media}
-                  image="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081"
-                  title="Image"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {"Destino"}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
-                    Información sobre el destino
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Button size="small" color="primary">
-                  Ver más
-                </Button>
-                <Button size="small" color="primary">
-                  Reservar
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-
-          <Grid item xs={6} sm={2}>
-            <Card className={cardStyleClass.root}>
-              <CardActionArea>
-                <CardMedia
-                  className={cardStyleClass.media}
-                  image="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081"
-                  title="Image"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {"Destino"}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
-                    Información sobre el destino
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Button size="small" color="primary">
-                  Ver más
-                </Button>
-                <Button size="small" color="primary">
-                  Reservar
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-
-          <Grid item xs={6} sm={2}>
-            <Card className={cardStyleClass.root}>
-              <CardActionArea>
-                <CardMedia
-                  className={cardStyleClass.media}
-                  image="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081"
-                  title="Image"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {"Destino"}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
-                    Información sobre el destino
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Button size="small" color="primary">
-                  Ver más
-                </Button>
-                <Button size="small" color="primary">
-                  Reservar
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-
-          <Grid item xs={6} sm={2}>
-            <Card className={cardStyleClass.root}>
-              <CardActionArea>
-                <CardMedia
-                  className={cardStyleClass.media}
-                  image="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081"
-                  title="Image"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {"Destino"}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
-                    Información sobre el destino
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Button size="small" color="primary">
-                  Ver más
-                </Button>
-                <Button size="small" color="primary">
-                  Reservar
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-
-          <Grid item xs={6} sm={2}>
-            <Card className={cardStyleClass.root}>
-              <CardActionArea>
-                <CardMedia
-                  className={cardStyleClass.media}
-                  image="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081"
-                  title="Image"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {"Destino"}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
-                    Información sobre el destino
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Button size="small" color="primary">
-                  Ver más
-                </Button>
-                <Button size="small" color="primary">
-                  Reservar
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-
-          <Grid item xs={6} sm={2}>
-            <Card className={cardStyleClass.root}>
-              <CardActionArea>
-                <CardMedia
-                  className={cardStyleClass.media}
-                  image="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081"
-                  title="Image"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {"Destino"}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
-                    Información sobre el destino
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Button size="small" color="primary">
-                  Ver más
-                </Button>
-                <Button size="small" color="primary">
-                  Reservar
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-
-          <Grid item xs={6} sm={2}>
-            <Card className={cardStyleClass.root}>
-              <CardActionArea>
-                <CardMedia
-                  className={cardStyleClass.media}
-                  image="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081"
-                  title="Image"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {"Destino"}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
-                    Información sobre el destino
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Button size="small" color="primary">
-                  Ver más
-                </Button>
-                <Button size="small" color="primary">
-                  Reservar
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-
-          <Grid item xs={6} sm={2}>
-            <Card className={cardStyleClass.root}>
-              <CardActionArea>
-                <CardMedia
-                  className={cardStyleClass.media}
-                  image="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081"
-                  title="Image"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {"Destino"}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
-                    Información sobre el destino
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Button size="small" color="primary">
-                  Ver más
-                </Button>
-                <Button size="small" color="primary">
-                  Reservar
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-
-          <Grid item xs={6} sm={2}>
-            <Card className={cardStyleClass.root}>
-              <CardActionArea>
-                <CardMedia
-                  className={cardStyleClass.media}
-                  image="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081"
-                  title="Image"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {"Destino"}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
-                    Información sobre el destino
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Button size="small" color="primary">
-                  Ver más
-                </Button>
-                <Button size="small" color="primary">
-                  Reservar
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-
-          <Grid item xs={6} sm={2}>
-            <Card className={cardStyleClass.root}>
-              <CardActionArea>
-                <CardMedia
-                  className={cardStyleClass.media}
-                  image="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081"
-                  title="Image"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {"Destino"}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
-                    Información sobre el destino
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Button size="small" color="primary">
-                  Ver más
-                </Button>
-                <Button size="small" color="primary">
-                  Reservar
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-
-          <Grid item xs={6} sm={2}>
-            <Card className={cardStyleClass.root}>
-              <CardActionArea>
-                <CardMedia
-                  className={cardStyleClass.media}
-                  image="https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png?format=jpg&quality=90&v=1530129081"
-                  title="Image"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {"Destino"}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
-                    Información sobre el destino
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Button size="small" color="primary">
-                  Ver más
-                </Button>
-                <Button size="small" color="primary">
-                  Reservar
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
+              )
+            })
+          }
         </Grid>
       </div>
-    </div>
   );
+}
 };
 export default Catalog;

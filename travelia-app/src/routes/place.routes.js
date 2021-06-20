@@ -18,16 +18,16 @@ router.get('/:id', async (req, res) => {
 
 // ADD a new place
 router.post('/', async (req, res) => {
-  const { title, description, place, sits, date } = req.body;
-  const placeNew = new Place({title, description, place, sits, date});
+  const { title, description, place, sits, cost, date, image } = req.body;
+  const placeNew = new Place({title, description, place, sits, cost, date, image});
   await placeNew.save();
   res.json({status: 'Place Saved'});
 });
 
 // UPDATE a new place
 router.put('/:id', async (req, res) => {
-  const { title, description, place, sits, date } = req.body;
-  const newPlace = {title, description, place, sits, date };
+  const { title, description, place, sits, cost, date, image } = req.body;
+  const newPlace = {title, description, place, sits, cost, date, image };
   await Place.findByIdAndUpdate(req.params.id, newPlace);
   res.json({status: 'Place Updated'});
 });

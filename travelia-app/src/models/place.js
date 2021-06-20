@@ -6,7 +6,9 @@ const PlaceSchema = new Schema({
   description: { type: String, required: true },
   place: {type: String, required: true},
   sits: {type: Number, required: true},
-  date: {type: Date, required: true}
+  cost: {type: Number, required: true},
+  date: {type: String, required: true},
+  image: {type: String, required: false}
 });
 
 module.exports = mongoose.model('Place', PlaceSchema);
