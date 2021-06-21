@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
 // ?
-import { Typography } from "@material-ui/core";
+import { IconButton, Typography, Divider } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -13,7 +13,10 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
-
+import DeleteIcon from '@material-ui/icons/Delete';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
+ 
 // Style
 import { divCenterStyle } from "./CssStyles";
 
@@ -34,8 +37,9 @@ class Catalog extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
-    //this.addPlace = this.addPlace.bind(this);
+    this.addPlaceToCart = this.addPlaceToCart.bind(this);
   }
+
 
   componentDidMount() {
     this.fetchPlaces();
@@ -57,9 +61,48 @@ class Catalog extends Component {
     });
   }
 
+  addPlaceToCart(e) {
+    console.log('Adding place to cart');
+    e.preventDefault();
+  }
+
   render() {
   return (
     <div>
+      {/* My cart */}
+      <Grid container>
+        <Grid item xs={12}>
+          <div style={{display: 'inline-block'}}>
+            
+        <Typography type="h2">{"Mi carrito"}</Typography>
+          </div>
+        </Grid>
+      </Grid>
+      <Grid container spacing={2}>
+        <Grid item xs={2}>
+          <Paper variant="outlined">
+            <div style={{paddingLeft: '10px', paddingRight: '10px', paddingBottom: '10px', paddingTop: '10px'}}>
+            <Typography type="h4">{"Titulo"}</Typography>
+            <Divider></Divider>
+            <Typography variant="overline">{"Unidades x Precio"}</Typography>
+            <br></br>
+            <Typography variant="overline">{"Precio total de viaje"}</Typography>
+            <Divider></Divider>
+            <IconButton>
+              <AddIcon fontSize="small"/>
+            </IconButton>
+            <IconButton>
+              <RemoveIcon fontSize="small"/>
+            </IconButton>
+            <IconButton>
+              <DeleteIcon fontSize="small"/>
+            </IconButton>
+            </div>
+          </Paper>
+        </Grid>
+        </Grid>
+
+        {/* Locations for travel */}
         <Grid container spacing={2}>
           {
             this.state.places.map(_place => {
@@ -92,10 +135,7 @@ class Catalog extends Component {
                 </CardContent>
               </CardActionArea>
               <CardActions>
-                <Button size="small" color="primary">
-                  Ver más
-                </Button>
-                <Button size="small" color="primary">
+                <Button size="small" color="primary" onClick={this.addPlaceToCart}>
                   Reservar por {_place.cost}
                 </Button>
               </CardActions>
