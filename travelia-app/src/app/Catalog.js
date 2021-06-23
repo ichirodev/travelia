@@ -106,7 +106,7 @@ class Catalog extends Component {
 
     // add sit on a selected place
     addSitToPlaceOnCart(id) {
-        console.log('setState aqui addSit en ' + id);
+        // console.log('setState -> addSit: ' + id);
         fetch(`/api/places/${id}`, {
             method: "GET",
             headers: {
@@ -131,8 +131,7 @@ class Catalog extends Component {
 
     // remove sit on a selected place
     removeSitToPlaceOnCart(id) {
-        console.log('setState aqui removeSit en ' + id);
-        
+        //console.log('setState -> removeSit: ' + id);
         for (let index = 0; index < this.arrayOfPlaces.length; index++) {
             if (this.arrayOfPlaces[index]._id == id) {
                 if (this.arrayOfPlaces[index].boughtsits - 1 >= 1) {
@@ -148,8 +147,7 @@ class Catalog extends Component {
 
     // delete from cart
     deletePlaceFromCart(id) {
-        console.log('setState aqui removePlace en ' + id);
-        
+        // console.log('setState -> removePlace:' + id);
         for (let index = 0; index < this.arrayOfPlaces.length; index++) {
             if (this.arrayOfPlaces[index]._id == id) {
                 this.arrayOfPlaces.splice(index, 1);
@@ -270,8 +268,9 @@ class Catalog extends Component {
                                             }
                                         })
                                         .then(res => {
+                                            console.log('🦦');
                                             /* Response from every PUT */
-                                            console.log(res);
+                                            //console.log(res);
                                         }); 
                                     }
                                 }
@@ -308,9 +307,6 @@ class Catalog extends Component {
                                 /* Once done the posts and puts
                                 Fetch places to update shown places data and quit Cart from render */
                                 this.fetchPlaces();
-                            })
-                            .then(data => {
-                                console.log(data);
                             });
                         }}>{"Comprar"}</Button>
                         </Grid>
