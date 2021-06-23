@@ -2,9 +2,8 @@
 import React, { Component, useState } from "react";
 import ReactDOM from "react-dom";
 
-// ?
+// Material-UI components
 import { IconButton, Typography, Divider } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
@@ -13,12 +12,11 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
+
+// Icons
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
-
-// Style
-import { divCenterStyle } from "./CssStyles";
 
 class Catalog extends Component {
     constructor() {
@@ -85,9 +83,9 @@ class Catalog extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.addPlaceToCart = this.addPlaceToCart.bind(this);
         this.addSitToPlaceOnCart = this.addSitToPlaceOnCart.bind(this);
-        this.completeOrder = this.completeOrder(this);
     }
 
+    // add place to cart
     addPlaceToCart(id) {
             console.log('setState aqui');
             fetch(`/api/places/${id}`, {
@@ -105,6 +103,7 @@ class Catalog extends Component {
         });
     }
 
+    // add sit on a selected place
     addSitToPlaceOnCart(id) {
         console.log('setState aqui addSit en ' + id);
         fetch(`/api/places/${id}`, {
@@ -129,7 +128,7 @@ class Catalog extends Component {
     });
     }
 
-
+    // remove sit on a selected place
     removeSitToPlaceOnCart(id) {
         console.log('setState aqui removeSit en ' + id);
         
@@ -146,6 +145,7 @@ class Catalog extends Component {
         
     }
 
+    // delete from cart
     deletePlaceFromCart(id) {
         console.log('setState aqui removePlace en ' + id);
         
@@ -163,6 +163,7 @@ class Catalog extends Component {
         this.fetchPlaces();
     }
 
+    // fetch the Places shown on the catalog, can be used to restart the state and re-render
     fetchPlaces() {
         fetch("/api/places")
             .then((res) => res.json())
@@ -172,6 +173,7 @@ class Catalog extends Component {
             });
     }
 
+    // Handle changes made to states
     handleChange(e) {
         const { name, value } = e.target;
         this.setState({
@@ -179,51 +181,15 @@ class Catalog extends Component {
         });
     }
 
-    completeOrder() {
-        
-/*
-        fetch('/api/orders/', {
-            method: "POST",
-            body: JSON.stringify(new this.Cart(this.arrayOfPlaces, totalPriceOfOrder, "Todayy")),
-            headers: {
-                'Accept': 'application/json',
-                'Content-type' : 'application/json',
-            }
-        })
-        .then(res => console.log(res))
-        .catch(err => console.log(err));
-  */ 
-    }
-
-    getSits(id) {
-        fetch(`/api/places/${id}`, {
-            method: 'GET',        
-            headers: {
-                'Accept': 'application/json',
-                'Content-type': 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            return data.sits;
-        });
-    }
-
     render() {
         return (
             <div>
-                {/* Cart */}
+                {/** 
+                 * C A R T
+                 */}
                 <div>
-                    <Grid container>
-                        <Grid item xs={12}>
-                            <div style={{ display: "inline-block" }}>
-                                <Typography type="h2">
-                                    {"Mi carrito"}
-                                </Typography>
-                            </div>
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={2}>
+                    {/* Rendering selected items */}
+                    <Grid container spacing={2} style={{marginLeft: '10px', marginRight: '10px'}}>
                         {
                         this.arrayOfPlaces.map((element) => {
                             return(
@@ -238,7 +204,7 @@ class Catalog extends Component {
                                             }}
                                         >
                                             <Typography type="h4">
-                                                {element.title}
+                                                {element.title} | {element.date}
                                             </Typography>
                                             <Divider></Divider>
                                             <Typography variant="overline">
@@ -264,43 +230,71 @@ class Catalog extends Component {
                             )
                         })}
                     </Grid>
-                </div>
-                <Button onClick={() => {
-                    for(let i = 0; i < this.arrayOfPlaces.length; i = i + 1) {
-                        console.log(this.arrayOfPlaces[i]._id + " ->" + i);
-                        
-                        for (let j = 0; j < this.arrayForSits.length; j = j + 1) {
-                            if (this.arrayOfPlaces[i]._id == this.arrayForSits[j].id_s) {
+                    {/* Cart legend and button */}
+                    <Divider style={{margin: '10px'}}></Divider>
+                    <Grid container spacing={2} 
+                    direction="row"
+                    justify="flex-end"
+                    alignItems="center"
+                    >
+                        <Grid item xs={6} sm={11}>
+                            <Typography variant="h6">
+                                {"Mi carrito"}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={6} sm={1}>
+                        {/* Buy button with its buy function */}
+                        <Button variant="contained" color="secondary" onClick={() => {
+                            /* Look at every place selected by the user */
+                            for(let i = 0; i < this.arrayOfPlaces.length; i = i + 1) {
+                                /* Search the id of the place at index i and get the number of available sits */
+                                for (let j = 0; j < this.arrayForSits.length; j = j + 1) {
+                                    /* When the ids of both searches are the same fetch an update of the selected places
+                                    with the new data, mostly modifying the left sits*/
+                                    if (this.arrayOfPlaces[i]._id == this.arrayForSits[j].id_s) {
 
-                                fetch(`/api/places/${this.arrayOfPlaces[i]._id}`, {
-                                    method: 'PUT',
-                                    body: JSON.stringify({
-                                        title: this.arrayOfPlaces[i].title,
-                                        description: this.arrayOfPlaces[i].description,
-                                        place: this.arrayOfPlaces[i].place,
-                                        sits: this.arrayForSits[j].sits_s - this.arrayOfPlaces[i].boughtsits,
-                                        cost: this.arrayOfPlaces[i].cost,
-                                        date: this.arrayOfPlaces[i].date,
-                                        image: this.arrayOfPlaces[i].image
-                                    }),
-                                    headers: {
-                                        'Accept': 'application/json',
-                                        'Content-type': 'application/json'
+                                        fetch(`/api/places/${this.arrayOfPlaces[i]._id}`, {
+                                            method: 'PUT',
+                                            body: JSON.stringify({
+                                                title: this.arrayOfPlaces[i].title,
+                                                description: this.arrayOfPlaces[i].description,
+                                                place: this.arrayOfPlaces[i].place,
+                                                sits: this.arrayForSits[j].sits_s - this.arrayOfPlaces[i].boughtsits,
+                                                cost: this.arrayOfPlaces[i].cost,
+                                                date: this.arrayOfPlaces[i].date,
+                                                image: this.arrayOfPlaces[i].image
+                                            }),
+                                            headers: {
+                                                'Accept': 'application/json',
+                                                'Content-type': 'application/json'
+                                            }
+                                        })
+                                        .then(res => {
+                                            /* Once done the update... */
+                                            /* Add Order to the Database */
+
+                                            /* Restore the states and arrays to a initial state */
+                                            this.arrayOfPlaces = [];
+                                            this.arrayForSits = [];
+                                            this.foo = 0;
+                                            this.setState({ ncart: 0 });
+                                            this.setState({ nsits: 0 });
+                                            /* Fetch places to update shown places data */
+                                            this.fetchPlaces();
+                                        }); 
                                     }
-                                })
-                                .then(res => {
-                                    /* Make it so you modify the data on the whole page */
-                                    console.log(res);
-                                }); 
-
+                                }
                             }
-                        }
-                    }
-                }}>
-                    COMPRAR
-                </Button>
-                {/* Catalog */}
+                        }}>{"Comprar"}</Button>
+                        </Grid>
+                    </Grid>
+                </div>
+                
+                {/**
+                 * C A T A L O G
+                 */}
                 <Grid container spacing={2}>
+                    {/* Show the list of available places to buy */}
                     {this.state.places.map((_place) => {
                         this.arrayForSits.push(new this.SitsOnly(_place._id, _place.sits));
                         return (
