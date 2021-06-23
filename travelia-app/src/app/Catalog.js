@@ -18,6 +18,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 
+// Catalog
 class Catalog extends Component {
     constructor() {
         super();
@@ -169,7 +170,6 @@ class Catalog extends Component {
             .then((res) => res.json())
             .then((data) => {
                 this.setState({ places: data });
-                console.log(this.state.places);
             });
     }
 
@@ -270,21 +270,48 @@ class Catalog extends Component {
                                             }
                                         })
                                         .then(res => {
-                                            /* Once done the update... */
-                                            /* Add Order to the Database */
-
-                                            /* Restore the states and arrays to a initial state */
-                                            this.arrayOfPlaces = [];
-                                            this.arrayForSits = [];
-                                            this.foo = 0;
-                                            this.setState({ ncart: 0 });
-                                            this.setState({ nsits: 0 });
-                                            /* Fetch places to update shown places data */
-                                            this.fetchPlaces();
+                                            /* Response from every PUT */
+                                            console.log(res);
                                         }); 
                                     }
                                 }
                             }
+
+                            /* Calculate total cost */
+                            var totalOrderCost = 0;
+                            for (let k = 0; k < this.arrayOfPlaces.length; k++) {
+                                /* Get total cost of the order */
+                                totalOrderCost = totalOrderCost + (this.arrayOfPlaces[k].boughtsits * this.arrayOfPlaces[k].cost);
+                            }
+                            
+                            /* POST the order to the db */
+                            fetch('/api/orders/', {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    places: this.arrayOfPlaces,
+                                    total: totalOrderCost,
+                                    date: '27/06/21'
+                                }),
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-type': 'application/json'
+                                }
+                            })
+                            .then(res => {
+                                res.json();
+                                /* Restore the states and arrays to a initial state */
+                                this.arrayOfPlaces = [];
+                                this.arrayForSits = [];
+                                this.foo = 0;
+                                this.setState({ ncart: 0 });
+                                this.setState({ nsits: 0 });    
+                                /* Once done the posts and puts
+                                Fetch places to update shown places data and quit Cart from render */
+                                this.fetchPlaces();
+                            })
+                            .then(data => {
+                                console.log(data);
+                            });
                         }}>{"Comprar"}</Button>
                         </Grid>
                     </Grid>

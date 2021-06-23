@@ -1,7 +1,8 @@
 // React
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component } from 'react';
+import ReactDOM, { render } from 'react-dom';
 
+// Material-UI Components
 import { Typography, TextField, Divider } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -13,66 +14,65 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 
-// Style
-import { gridStyle, divCenterStyle } from "./CssStyles";
-
-const cardStyle = makeStyles({
-  root: {
-    maxWidth: 260,
-  },
-});
-
-/* Login */
-const Login = () => {
-  const gridStyleClass = gridStyle();
-  const cardStyleClass = cardStyle();
-  const divCenterStyleClass = divCenterStyle();
-
-  return (
-    <div className={divCenterStyleClass.div}>
-      <div className={gridStyleClass.root}>
-        <Grid
-          container
-          spacing={2}
-          direction="row"
-          justify="center"
-          alignItems="stretch"
-        >
-          <Grid item sm={12} md={2} xl={2}>
-            <Card className={cardStyleClass.root}>
-              <CardContent>
-                <form>
+// Login
+class Login extends Component {
+  render() {
+    return (
+      <div style={{
+        marginLeft: '32px',
+        marginRight: '32px',
+        marginTop: '20px',
+        marginBottom: '20px'
+      }}>
+        <div style={{minWidth: 275}}>
+          <Grid
+            container
+            spacing={2}
+            direction="column"
+            justify="center"
+            alignItems="stretch"
+          >
+            <Grid item sm={12} md={4} xl={6}>
+              <Card style={{flexGrow: 1}}>
+                <CardContent>
+                  <form>
                   <TextField
-                    id="email"
+                    id="loginmail"
                     label="Correo electronico"
-                    variant="outlined"
-                    style={{
-                      margin: 8,
+                    style={{ margin: 8 }}
+                    helperText="Ej: jose@tuempresa.com"
+                    fullWidth
+                    margin="normal"
+                    InputLabelProps={{
+                      shrink: true,
                     }}
+                    style={{marginRight:'10px'}}
                   />
                   <TextField
-                    id="password"
+                    id="loginpass"
                     label="Contraseña"
-                    variant="outlined"
-                    style={{
-                      margin: 8,
+                    style={{ margin: 8 }}
+                    placeholder="*********"
+                    fullWidth
+                    margin="normal"
+                    InputLabelProps={{
+                      shrink: true,
                     }}
+                    style={{marginRight:'10px'}}
                   />
-                </form>
-              </CardContent>
-              <Divider></Divider>
-              <CardActions>
-                <div style={{ marginLeft: "33%" }}>
-                  <Button size="small" color="primary" style={{ margin: 2 }}>
-                    {"Ingresar"}
-                  </Button>
-                </div>
-              </CardActions>
-            </Card>
+                  </form>
+                </CardContent>
+                <CardActions
+                style={{alignContent: 'center', alignItems: 'center', justifyContent: 'center', justifyItems: 'center'}}>
+                  <Button color="primary">{"Iniciar sesion"}</Button>
+                </CardActions>
+              </Card>
+            </Grid>
           </Grid>
-        </Grid>
+        </div>
       </div>
-    </div>
-  );
+    );  
+  }
 };
+
 export default Login;
