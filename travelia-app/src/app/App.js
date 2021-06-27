@@ -114,6 +114,11 @@ function App() {
                 {/* Show user or Login/Register button */}
                 <Grid item>
                   <div className={avatarStyleClass.root}>
+                  <Link to="/History" style={{ color: "white" }}>
+                      <Button color="inherit" style={{marginTop: '10px'}}>
+                        {"My history"}
+                      </Button>
+                    </Link>
                     <Link to="/Login" style={{ color: "white" }}>
                       <Button color="inherit">
                         {"Login/Register"}
@@ -136,16 +141,16 @@ function App() {
         {/* Content (Routes) of the webpage */}
         <div className={backgroundStyleClass.content}>
           <Switch>
-            <Route path="/History">
+            <Route exact path="/History">
               <History />
             </Route>
-            <Route path="/Catalog">
+            <Route exact path="/Catalog">
               <Catalog />
             </Route>
-            <Route path="/Login">
+            <Route exact path="/Login">
               <Login />
             </Route>
-            <Route path="/">
+            <Route exact path="/">
               <Home />
             </Route>
           </Switch>
@@ -156,7 +161,7 @@ function App() {
             <Divider />
             <br></br>
             <Grid container spacing={2} justify="center">
-              <Grid xs={10}>
+              <Grid item xs={10}>
                 <div>
                   <Typography variant="caption">
                     {

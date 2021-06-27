@@ -33,6 +33,8 @@ class Login extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.logIn = this.logIn.bind(this);
     this.signUp = this.signUp.bind(this);
+    this.displayLogCard = this.displayLogCard.bind(this);
+    this.displayMessage = this.displayMessage.bind(this);
   }
 
   componentDidMount() {
@@ -120,55 +122,51 @@ class Login extends Component {
     });
   }
 
-  getLogCard() {
-    return(
-      <Grid item sm={12} md={4} xl={6}>
-        <Card style={{flexGrow: 1}}>
-          <CardContent>
-            <form>
-            <TextField
-              name="email"
-              onChange={this.handleChange}
-              value={this.state.email}
-              label="Correo electronico"
-              style={{ margin: 8 }}
-              helperText="Ej: jose@tuempresa.com"
-              fullWidth
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              style={{marginRight:'10px'}}
-            />
-            <TextField
-              name="password"
-              onChange={this.handleChange}
-              value={this.state.password}
-              label="Contraseña"
-              style={{ margin: 8 }}
-              placeholder="*********"
-              fullWidth
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              style={{marginRight:'10px'}}
-            />
-            </form>
-          </CardContent>
-          <CardActions
-          style={{alignContent: 'center', alignItems: 'center', justifyContent: 'center', justifyItems: 'center'}}>
-            <Button color="primary" onClick={this.logIn}>{"Iniciar sesion"}</Button>
-            <Button color="primary" onClick={this.signUp}>{"Registrarme"}</Button>
-          </CardActions>
-        </Card>
-      </Grid>
-    );
-  }
-
   displayLogCard() {
     if (!localStorage.getItem('x-access-token')) {
-      getLogCard();
+      return(
+        <Grid item sm={12} md={4} xl={6}>
+          <Card style={{flexGrow: 1}}>
+            <CardContent>
+              <form>
+              <TextField
+                name="email"
+                onChange={this.handleChange}
+                value={this.state.email}
+                label="Correo electronico"
+                style={{ margin: 8 }}
+                helperText="Ej: jose@tuempresa.com"
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                style={{marginRight:'10px'}}
+              />
+              <TextField
+                name="password"
+                onChange={this.handleChange}
+                value={this.state.password}
+                label="Contraseña"
+                style={{ margin: 8 }}
+                placeholder="*********"
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                style={{marginRight:'10px'}}
+              />
+              </form>
+            </CardContent>
+            <CardActions
+            style={{alignContent: 'center', alignItems: 'center', justifyContent: 'center', justifyItems: 'center'}}>
+              <Button color="primary" onClick={this.logIn}>{"Iniciar sesion"}</Button>
+              <Button color="primary" onClick={this.signUp}>{"Registrarme"}</Button>
+            </CardActions>
+          </Card>
+        </Grid>
+      );
     }
 
     const t = localStorage.getItem('x-access-token');
@@ -184,7 +182,7 @@ class Login extends Component {
     .then(res => res.json())
     .then(data => {
       if (data.auth == false) {
-        this.getLogCard();
+        // this.getLogCard();
         this.setState({ logged: 0 });
       } else {
         console.log(data._id + ' logged');
